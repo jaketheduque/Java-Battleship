@@ -1,4 +1,4 @@
-package me.jazzyjake.misc;
+package me.jazzyjake.ships;
 
 public enum Direction {
 	RIGHT, DOWN;

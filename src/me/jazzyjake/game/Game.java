@@ -8,19 +8,36 @@ import me.jazzyjake.player.RedPlayer;
 import java.util.Arrays;
 
 public class Game {
-	private RedPlayer redPlayer = new RedPlayer();
-	private BluePlayer bluePlayer = new BluePlayer();
+	private RedPlayer redPlayer;
+	private BluePlayer bluePlayer;
 
 	private Player attacker;
 	private Player defender;
 
 	public Game() {
-		if (Math.random() > 0.5) {
-			attacker = redPlayer;
-			defender = bluePlayer;
+		this.redPlayer = new RedPlayer();
+		this.bluePlayer = new BluePlayer();
+	}
+
+	public Game(Player player) {
+		if (player instanceof RedPlayer) {
+			System.out.println("RedPlayer Game constructor called!");
+			this.redPlayer = redPlayer;
+			this.bluePlayer = new BluePlayer();
+
 		} else {
-			attacker = bluePlayer;
-			defender = redPlayer;
+			System.out.println("BluePlayer Game constructor called!");
+			this.bluePlayer = bluePlayer;
+			this.redPlayer = new RedPlayer();
+
+		}
+
+		if (Math.random() > 0.5) {
+			attacker = this.redPlayer;
+			defender = this.bluePlayer;
+		} else {
+			attacker = this.bluePlayer;
+			defender = this.redPlayer;
 		}
 	}
 
@@ -54,6 +71,32 @@ public class Game {
 				return bluePlayer;
 		}
 		return null;
+	}
+
+	public void setAttacker(PlayerColor color) {
+		switch (color) {
+			case RED:
+				attacker = redPlayer;
+				defender = bluePlayer;
+				return;
+			case BLUE:
+				attacker = bluePlayer;
+				defender = redPlayer;
+				return;
+		}
+	}
+
+	public void setDefender(PlayerColor color) {
+		switch (color) {
+			case RED:
+				defender = redPlayer;
+				attacker = bluePlayer;
+				return;
+			case BLUE:
+				defender = bluePlayer;
+				attacker = redPlayer;
+				return;
+		}
 	}
 
 	public Player getAttacker() {

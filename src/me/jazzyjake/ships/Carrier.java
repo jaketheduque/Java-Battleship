@@ -2,10 +2,9 @@ package me.jazzyjake.ships;
 
 import me.jazzyjake.exceptions.InvalidOriginException;
 import me.jazzyjake.misc.BattleshipUtil;
-import me.jazzyjake.misc.Direction;
 
 public class Carrier extends Ship {
-    private Carrier(int x, int y, Direction direction) throws InvalidOriginException {
+    public Carrier(int x, int y, Direction direction) throws InvalidOriginException {
         super(x, y, direction);
     }
 

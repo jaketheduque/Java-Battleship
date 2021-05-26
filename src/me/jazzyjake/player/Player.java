@@ -1,13 +1,11 @@
 package me.jazzyjake.player;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
 import me.jazzyjake.game.MoveResponse;
-import me.jazzyjake.misc.BattleshipGenerator;
-import me.jazzyjake.misc.BattleshipUtil;
+import me.jazzyjake.misc.ShipGenerator;
 import me.jazzyjake.ships.Ship;
 
 public abstract class Player {
@@ -15,7 +13,11 @@ public abstract class Player {
     private HashSet<int[]> firedShots = new HashSet<>();
 
     Player() {
-        this.ships = BattleshipGenerator.generateShips();
+        this.ships = ShipGenerator.generateRandomShips();
+    }
+
+    Player(ArrayList<Ship> ships) {
+        this.ships = ships;
     }
 
     public MoveResponse checkShot(int x, int y) {

@@ -4,16 +4,16 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import me.jazzyjake.exceptions.InvalidOriginException;
-import me.jazzyjake.misc.Direction;
 
 public abstract class Ship {
+	public static final Class[] SHIP_TYPES = {Carrier.class, Battleship.class, Cruiser.class, Submarine.class, PatrolBoat.class};
 	private final Direction direction;
 	private final int[][] coords;
 	private HashSet<int[]> hits = new HashSet<>();
 	private boolean sunk;
 
 	Ship(int x, int y, Direction direction) throws InvalidOriginException {
-		if (!originValid(x, y, direction)) throw new InvalidOriginException(x, y, direction);
+		if (!originValid(x, y, direction)) throw new InvalidOriginException(InvalidOriginException.InvalidOriginCause.OUT_OF_BOUNDS, x, y, direction);
 		this.direction = direction;
 		this.coords = fillCoords(x, y, direction);
 	}

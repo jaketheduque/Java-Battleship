@@ -2,18 +2,17 @@ package me.jazzyjake.ships;
 
 import me.jazzyjake.exceptions.InvalidOriginException;
 import me.jazzyjake.misc.BattleshipUtil;
-import me.jazzyjake.misc.Direction;
 
-public class Destroyer extends Ship {
-    private Destroyer(int x, int y, Direction direction) throws InvalidOriginException {
+public class PatrolBoat extends Ship {
+    public PatrolBoat(int x, int y, Direction direction) throws InvalidOriginException {
         super(x, y, direction);
     }
 
-    public static Destroyer random() {
+    public static PatrolBoat random() {
         Direction direction = Direction.randomDirection();
-        int[] origin = Destroyer.randomOrigin(direction);
+        int[] origin = PatrolBoat.randomOrigin(direction);
 
-        return new Destroyer(origin[0], origin[1], direction);
+        return new PatrolBoat(origin[0], origin[1], direction);
     }
 
     @Override
