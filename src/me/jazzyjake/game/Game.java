@@ -24,20 +24,20 @@ public class Game {
 		}
 	}
 
-	public boolean fireShotAtDefender(int x, int y) {
-		int[] shot = new int[]{x, y};
+	public MoveResponse fireShotAtDefender(int x, int y) {
+		int[] shot = new int[] {x, y};
 
 		for (int[] coord : attacker.getFiredShots()) {
-			if (Arrays.equals(coord, shot)) return false;
+			if (Arrays.equals(coord, shot)) return MoveResponse.DUPLICATE_SHOT;
 		}
 
 		attacker.getFiredShots().add(shot);
 
-		boolean hit = defender.checkShot(x, y);
+		MoveResponse response = defender.checkShot(x, y);
 
 		nextTurn();
 
-		return hit;
+		return response;
 	}
 
 	public void nextTurn() {

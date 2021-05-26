@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import me.jazzyjake.game.MoveResponse;
 import me.jazzyjake.misc.BattleshipGenerator;
 import me.jazzyjake.misc.BattleshipUtil;
 import me.jazzyjake.ships.Ship;
@@ -17,16 +18,16 @@ public abstract class Player {
         this.ships = BattleshipGenerator.generateShips();
     }
 
-    public boolean checkShot(int x, int y) {
+    public MoveResponse checkShot(int x, int y) {
         int[] shot = {x, y};
 
         for (Ship ship : ships) {
             for (int[] coord : ship.getCoords()) {
-                if (Arrays.equals(shot, coord)) return true;
+                if (Arrays.equals(shot, coord)) return MoveResponse.HIT;
             }
         }
 
-        return false;
+        return MoveResponse.MISS;
     }
 
     public abstract PlayerColor getColor();
