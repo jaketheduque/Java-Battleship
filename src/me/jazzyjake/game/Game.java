@@ -17,19 +17,26 @@ public class Game {
 	public Game() {
 		this.redPlayer = new RedPlayer();
 		this.bluePlayer = new BluePlayer();
+
+		if (Math.random() > 0.5) {
+			attacker = this.redPlayer;
+			defender = this.bluePlayer;
+		} else {
+			attacker = this.bluePlayer;
+			defender = this.redPlayer;
+		}
 	}
 
 	public Game(Player player) {
 		if (player instanceof RedPlayer) {
 			System.out.println("RedPlayer Game constructor called!");
-			this.redPlayer = redPlayer;
+			this.redPlayer = (RedPlayer) player;
 			this.bluePlayer = new BluePlayer();
 
 		} else {
 			System.out.println("BluePlayer Game constructor called!");
-			this.bluePlayer = bluePlayer;
+			this.bluePlayer = (BluePlayer) player;
 			this.redPlayer = new RedPlayer();
-
 		}
 
 		if (Math.random() > 0.5) {
@@ -52,7 +59,8 @@ public class Game {
 
 		MoveResponse response = defender.checkShot(x, y);
 
-		nextTurn();
+		// For testing purposes the attacker will remain constant
+		// nextTurn();
 
 		return response;
 	}

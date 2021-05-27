@@ -47,10 +47,7 @@ public abstract class Ship {
 		return hits;
 	}
 
-	public boolean addHit(int x, int y) {
-		// Creates new int[] to represent the coordinate
-		int[] hit = new int[] { x, y };
-
+	public boolean addHit(int[] hit) {
 		boolean matchFound = false;
 
 		// Checks to see if the requested hit is a actual ship coordinate
@@ -81,8 +78,10 @@ public abstract class Ship {
 		hits.add(hit);
 
 		// Checks to see if the hits size matches the coords length making the ship sunk
-		if (hits.size() == coords.length)
+		if (hits.size() == coords.length) {
 			sunk = true;
+			System.out.println("Ship sunk!");
+		}
 
 		return true;
 	}

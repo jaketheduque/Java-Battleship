@@ -9,23 +9,33 @@ import me.jazzyjake.misc.ShipGenerator;
 import me.jazzyjake.ships.Ship;
 
 public abstract class Player {
-    private ArrayList<Ship> ships;
+    private ArrayList<Ship> activeShips;
+    private ArrayList<Ship> sunkShips = new ArrayList<>();
     private HashSet<int[]> firedShots = new HashSet<>();
 
     Player() {
-        this.ships = ShipGenerator.generateRandomShips();
+        this.activeShips = ShipGenerator.generateRandomShips();
     }
 
     Player(ArrayList<Ship> ships) {
-        this.ships = ships;
+        this.activeShips = ships;
     }
 
     public MoveResponse checkShot(int x, int y) {
         int[] shot = {x, y};
 
-        for (Ship ship : ships) {
+        for (Ship ship : activeShips) {
             for (int[] coord : ship.getCoords()) {
-                if (Arrays.equals(shot, coord)) return MoveResponse.HIT;
+                if (Arrays.equals(shot, coord)) {
+                    ship.addHit(shot);
+
+                    if (ship.isSunk()) {
+                        activeShips.remove(ship);
+                        sunkShips.add(ship);
+                    }
+
+                    return MoveResponse.HIT;
+                }
             }
         }
 
@@ -35,7 +45,7 @@ public abstract class Player {
     public abstract PlayerColor getColor();
 
     public ArrayList<Ship> getShips() {
-        return ships;
+        return activeShips;
     }
 
     public HashSet<int[]> getFiredShots() {
