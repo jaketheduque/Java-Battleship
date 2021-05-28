@@ -80,7 +80,6 @@ public abstract class Ship {
 		// Checks to see if the hits size matches the coords length making the ship sunk
 		if (hits.size() == coords.length) {
 			sunk = true;
-			System.out.println("Ship sunk!");
 		}
 
 		return true;

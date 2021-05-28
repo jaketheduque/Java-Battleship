@@ -1,5 +1,7 @@
 package me.jazzyjake.game;
 
+import me.jazzyjake.clients.Client;
+import me.jazzyjake.events.TurnEventHandler;
 import me.jazzyjake.player.BluePlayer;
 import me.jazzyjake.player.Player;
 import me.jazzyjake.player.PlayerColor;
@@ -8,34 +10,21 @@ import me.jazzyjake.player.RedPlayer;
 import java.util.Arrays;
 
 public class Game {
-	private RedPlayer redPlayer;
-	private BluePlayer bluePlayer;
+	private TurnEventHandler turnHandler = new TurnEventHandler();
+
+	private final RedPlayer redPlayer;
+	private final BluePlayer bluePlayer;
 
 	private Player attacker;
 	private Player defender;
 
-	public Game() {
-		this.redPlayer = new RedPlayer();
-		this.bluePlayer = new BluePlayer();
-
-		if (Math.random() > 0.5) {
-			attacker = this.redPlayer;
-			defender = this.bluePlayer;
-		} else {
-			attacker = this.bluePlayer;
-			defender = this.redPlayer;
-		}
-	}
-
-	public Game(Player player) {
-		if (player instanceof RedPlayer) {
-			System.out.println("RedPlayer Game constructor called!");
-			this.redPlayer = (RedPlayer) player;
+	public Game(Client client) {
+		if (client.getPlayer() instanceof RedPlayer) {
+			this.redPlayer = (RedPlayer) client.getPlayer();
 			this.bluePlayer = new BluePlayer();
 
 		} else {
-			System.out.println("BluePlayer Game constructor called!");
-			this.bluePlayer = (BluePlayer) player;
+			this.bluePlayer = (BluePlayer) client.getPlayer();
 			this.redPlayer = new RedPlayer();
 		}
 
@@ -46,6 +35,32 @@ public class Game {
 			attacker = this.bluePlayer;
 			defender = this.redPlayer;
 		}
+
+		client.getPlayer().setGame(this);
+
+		turnHandler.addPropertyChangeListener(client);
+	}
+
+	public Game(Client client1, Client client2) {
+		if (Math.random() > 0.5) {
+			redPlayer = (RedPlayer) client1.getPlayer();
+			bluePlayer = (BluePlayer) client2.getPlayer();
+
+			attacker = this.redPlayer;
+			defender = this.bluePlayer;
+		} else {
+			bluePlayer = (BluePlayer) client1.getPlayer();
+			redPlayer = (RedPlayer) client2.getPlayer();
+
+			attacker = this.bluePlayer;
+			defender = this.redPlayer;
+		}
+
+		client1.getPlayer().setGame(this);
+		client2.getPlayer().setGame(this);
+
+		turnHandler.addPropertyChangeListener(client1);
+		turnHandler.addPropertyChangeListener(client2);
 	}
 
 	public MoveResponse fireShotAtDefender(int x, int y) {
@@ -69,6 +84,8 @@ public class Game {
 		Player tempDefender = defender;
 		defender = attacker;
 		attacker = tempDefender;
+
+		turnHandler.signalNextTurn(attacker, defender);
 	}
 
 	public Player getFromPlayerColor(PlayerColor color) {

@@ -1,14 +1,18 @@
 package me.jazzyjake.player;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import me.jazzyjake.game.Game;
 import me.jazzyjake.game.MoveResponse;
 import me.jazzyjake.misc.ShipGenerator;
 import me.jazzyjake.ships.Ship;
 
 public abstract class Player {
+    private Game game;
     private ArrayList<Ship> activeShips;
     private ArrayList<Ship> sunkShips = new ArrayList<>();
     private HashSet<int[]> firedShots = new HashSet<>();
@@ -40,6 +44,14 @@ public abstract class Player {
         }
 
         return MoveResponse.MISS;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     public abstract PlayerColor getColor();
