@@ -1,12 +1,8 @@
 package me.jazzyjake.player;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 
-import me.jazzyjake.game.Game;
 import me.jazzyjake.game.MoveResponse;
 import me.jazzyjake.misc.ShipGenerator;
 import me.jazzyjake.ships.Ship;
