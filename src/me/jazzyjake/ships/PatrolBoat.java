@@ -17,9 +17,9 @@ public class PatrolBoat extends Ship {
 
     @Override
     boolean originValid(int x, int y, Direction direction) {
-        if (direction == Direction.RIGHT && x > 9)
+        if (direction == Direction.RIGHT && x > 8)
             return false;
-        if (direction == Direction.DOWN && y > 9)
+        if (direction == Direction.DOWN && y > 8)
             return false;
         return true;
     }
@@ -30,13 +30,13 @@ public class PatrolBoat extends Ship {
 
         switch (direction) {
             case RIGHT:
-                x = BattleshipUtil.random(1, 9);
+                x = BattleshipUtil.random(0, 8);
                 y = BattleshipUtil.random();
 
                 return new int[]{x, y};
             case DOWN:
                 x = BattleshipUtil.random();
-                y = BattleshipUtil.random(1, 9);
+                y = BattleshipUtil.random(0, 8);
 
                 return new int[]{x, y};
             default:

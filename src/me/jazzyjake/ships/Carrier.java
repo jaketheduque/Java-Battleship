@@ -17,9 +17,9 @@ public class Carrier extends Ship {
 
     @Override
     boolean originValid(int x, int y, Direction direction) {
-        if (direction == Direction.RIGHT && x > 6)
+        if (direction == Direction.RIGHT && x > 5)
             return false;
-        if (direction == Direction.DOWN && y > 6)
+        if (direction == Direction.DOWN && y > 5)
             return false;
         return true;
     }
@@ -30,12 +30,12 @@ public class Carrier extends Ship {
 
         switch (direction) {
             case RIGHT:
-                x = BattleshipUtil.random(1, 6);
+                x = BattleshipUtil.random(0, 5);
                 y = BattleshipUtil.random();
                 return new int[]{x, y};
             case DOWN:
                 x = BattleshipUtil.random();
-                y = BattleshipUtil.random(1, 6);
+                y = BattleshipUtil.random(0, 5);
                 return new int[]{x, y};
             default:
                 return null;

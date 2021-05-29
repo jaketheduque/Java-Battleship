@@ -21,7 +21,7 @@ public abstract class Player {
     }
 
     public MoveResponse checkShot(int x, int y) {
-        int[] shot = {x+1, y+1};
+        int[] shot = {x, y};
 
         for (Ship ship : activeShips) {
             for (int[] coord : ship.getCoords()) {
@@ -41,14 +41,17 @@ public abstract class Player {
                 }
             }
         }
-
         return MoveResponse.MISS;
     }
 
     public abstract PlayerColor getColor();
 
-    public ArrayList<Ship> getShips() {
+    public ArrayList<Ship> getActiveShips() {
         return activeShips;
+    }
+
+    public ArrayList<Ship> getSunkShips() {
+        return sunkShips;
     }
 
     public MoveResponse[][] getFiredShots() {

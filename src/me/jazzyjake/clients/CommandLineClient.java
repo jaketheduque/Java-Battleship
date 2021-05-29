@@ -16,7 +16,7 @@ public class CommandLineClient extends Client {
     @Override
     public void onNextTurn(Client newAttacker, Client oldAttacker) {
         // If the new attacker is this client
-        if (newAttacker.getPlayer() == player) {
+        if (newAttacker == this) {
             System.out.println(player.getClass().getSimpleName() + " player is attacking!");
 
             Scanner scan = new Scanner(System.in);
@@ -28,14 +28,20 @@ public class CommandLineClient extends Client {
                 System.out.println("Enter shot coordinates: (x, y)");
                 String[] params = scan.nextLine().split(",");
 
-                int x = Integer.parseInt(params[0].trim());
-                int y = Integer.parseInt(params[0].trim());
+                int x = Integer.parseInt(params[0].trim()) - 1;
+                int y = Integer.parseInt(params[1].trim()) - 1;
 
-                response = game.fireShotAtDefender(x-1, y-1);
+                if (x < 0 || y < 0 || x > 10 || y > 10) {
+                    System.out.println("Invalid coordinates! Please try again.");
+                    continue;
+                }
+
+                response = game.fireShotAtDefender(x, y);
 
                 if (response == MoveResponse.DUPLICATE_SHOT) {
                     System.out.println("Duplicate shot! Please try again.");
                     response = null;
+                    continue;
                 }
             }
 

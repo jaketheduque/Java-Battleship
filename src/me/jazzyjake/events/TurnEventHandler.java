@@ -7,9 +7,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class TurnEventHandler {
-    // currentAttacker and currentDefender may not be needed (TBD)
-    private Client currentAttacker;
-    private Client currentDefender;
     private PropertyChangeSupport support;
 
     public TurnEventHandler() {
@@ -25,9 +22,6 @@ public class TurnEventHandler {
     }
 
     public void signalNextTurn(Client newAttacker, Client newDefender) {
-        currentAttacker = newAttacker;
-        currentDefender = newDefender;
-
-        support.firePropertyChange("currentAttacker", currentDefender, currentAttacker);
+        support.firePropertyChange("currentAttacker", newDefender, newAttacker);
     }
 }

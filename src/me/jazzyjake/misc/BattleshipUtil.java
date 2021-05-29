@@ -12,7 +12,7 @@ public class BattleshipUtil {
 	}
 	
 	public static int random() {
-		return (int) Math.round((Math.random() * (10 - 1)) + 1);
+		return (int) Math.round(Math.random() * 9);
 	}
 	
 	public static boolean containsCoord(LinkedHashSet<int[]> occupied, int[][] coords) {
@@ -37,8 +37,8 @@ public class BattleshipUtil {
 			char shipChar = ship.getClass().getSimpleName().charAt(0);
 
 			for (int[] coord : ship.getCoords()) {
-				int x = coord[0] - 1;
-				int y = coord[1] - 1;
+				int x = coord[0];
+				int y = coord[1];
 
 				grid[x][y] = shipChar;
 			}
@@ -61,7 +61,8 @@ public class BattleshipUtil {
 		for (int y = 0 ; y < 10 ; y++) {
 			for (int x = 0 ; x < 10 ; x++) {
 				if (shots[x][y] != null) {
-					grid[x][y] = shots[x][y].name().charAt(0);
+					char c = shots[x][y].name().charAt(0) == 'M' ? 'M' : 'H';
+					grid[x][y] = c;
 				} else {
 					grid[x][y] = 'x';
 				}

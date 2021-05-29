@@ -17,9 +17,9 @@ public class Cruiser extends Ship {
 
     @Override
     boolean originValid(int x, int y, Direction direction) {
-        if (direction == Direction.RIGHT && x > 8)
+        if (direction == Direction.RIGHT && x > 7)
             return false;
-        if (direction == Direction.DOWN && y > 8)
+        if (direction == Direction.DOWN && y > 7)
             return false;
         return true;
     }
@@ -30,12 +30,12 @@ public class Cruiser extends Ship {
 
         switch (direction) {
             case RIGHT:
-                x = BattleshipUtil.random(1, 8);
+                x = BattleshipUtil.random(0, 7);
                 y = BattleshipUtil.random();
                 return new int[]{x, y};
             case DOWN:
                 x = BattleshipUtil.random();
-                y = BattleshipUtil.random(1, 8);
+                y = BattleshipUtil.random(0, 7);
                 return new int[]{x, y};
             default:
                 return null;
