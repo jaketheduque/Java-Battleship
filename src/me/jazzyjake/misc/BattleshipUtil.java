@@ -1,5 +1,9 @@
 package me.jazzyjake.misc;
 
+import me.jazzyjake.game.MoveResponse;
+import me.jazzyjake.ships.Ship;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class BattleshipUtil {
@@ -18,5 +22,60 @@ public class BattleshipUtil {
 			}
 		}
 		return false;
+	}
+
+	public static void printShips(ArrayList<Ship> ships) {
+		char[][] grid = new char[10][10];
+
+		for (int y = 0 ; y < 10 ; y++) {
+			for (int x = 0 ; x < 10 ; x++) {
+				grid[x][y] = 'x';
+			}
+		}
+
+		for (Ship ship : ships) {
+			char shipChar = ship.getClass().getSimpleName().charAt(0);
+
+			for (int[] coord : ship.getCoords()) {
+				int x = coord[0] - 1;
+				int y = coord[1] - 1;
+
+				grid[x][y] = shipChar;
+			}
+		}
+
+		System.out.println();
+		System.out.println("Your ships:");
+		for (int y = 0 ; y < 10 ; y++) {
+			for (int x = 0 ; x < 10 ; x++) {
+				System.out.print(grid[x][y] + " ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
+
+	public static void printShots(MoveResponse[][] shots) {
+		char[][] grid = new char[10][10];
+
+		for (int y = 0 ; y < 10 ; y++) {
+			for (int x = 0 ; x < 10 ; x++) {
+				if (shots[x][y] != null) {
+					grid[x][y] = shots[x][y].name().charAt(0);
+				} else {
+					grid[x][y] = 'x';
+				}
+			}
+		}
+
+		System.out.println();
+		System.out.println("Your shots:");
+		for (int y = 0 ; y < 10 ; y++) {
+			for (int x = 0 ; x < 10 ; x++) {
+				System.out.print(grid[x][y] + " ");
+			}
+			System.out.println();
+		}
+		System.out.println();
 	}
 }

@@ -19,6 +19,8 @@ public class Game {
 	private Client attacker;
 	private Client defender;
 
+	private Client winner;
+
 	public Game(Client client) {
 		if (client.getPlayer() instanceof RedPlayer) {
 			redPlayer = client;
@@ -53,15 +55,17 @@ public class Game {
 	}
 
 	public MoveResponse fireShotAtDefender(int x, int y) {
-		int[] shot = new int[] {x, y};
-
-		for (int[] coord : attacker.getPlayer().getFiredShots()) {
-			if (Arrays.equals(coord, shot)) return MoveResponse.DUPLICATE_SHOT;
+		if (attacker.getPlayer().getFiredShots()[x][y] != null) {
+			return MoveResponse.DUPLICATE_SHOT;
 		}
 
-		attacker.getPlayer().getFiredShots().add(shot);
-
 		MoveResponse response = defender.getPlayer().checkShot(x, y);
+		attacker.getPlayer().getFiredShots()[x][y] = response;
+
+		if (response == MoveResponse.ALL_SHIPS_SUNK) {
+			winner = attacker;
+			System.out.println(winner.getPlayer().getClass().getSimpleName() + " is the winner!");
+		}
 
 		return response;
 	}
@@ -122,5 +126,9 @@ public class Game {
 
 	public Client getDefender() {
 		return defender;
+	}
+
+	public Client getWinner() {
+		return winner;
 	}
 }

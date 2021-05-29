@@ -84,6 +84,10 @@ public class ShipGenerator {
                     int y = Integer.parseInt(params[1].trim());
                     Direction direction = Direction.valueOf(params[2].trim().toUpperCase());
 
+                    if (x < 1 || x > 10 || y < 1 || y > 10) {
+                        throw new InvalidOriginException(InvalidOriginException.InvalidOriginCause.OUT_OF_BOUNDS, x, y, null);
+                    }
+
                     Ship ship = (Ship) shipConstructor.newInstance(x, y, direction);
 
                     while (BattleshipUtil.containsCoord(occupied, ship.getCoords())) {
@@ -94,15 +98,21 @@ public class ShipGenerator {
 
                     ships.add(ship);
                     successful = true;
+
+                    BattleshipUtil.printShips(ships);
                 } catch (InvalidOriginException e) {
                     System.out.println("Invalid origin due to: " + e.getInvalidOriginCause());
                 } catch (IllegalArgumentException e) {
                     System.out.println("Invalid direction!");
                 } catch (InvocationTargetException e) {
                     System.out.println("Invalid origin due to: " + ((InvalidOriginException) e.getCause()).getInvalidOriginCause());
+                } catch (Throwable t) {
+                    System.out.println("Error occurred due to: " + t.getClass().getSimpleName());
                 }
             } while (!successful);
         }
-        return null;
+
+        scan.close();
+        return ships;
     }
 }

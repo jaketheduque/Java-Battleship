@@ -14,7 +14,7 @@ import me.jazzyjake.ships.Ship;
 public abstract class Player {
     private ArrayList<Ship> activeShips;
     private ArrayList<Ship> sunkShips = new ArrayList<>();
-    private HashSet<int[]> firedShots = new HashSet<>();
+    private MoveResponse[][] firedShots = new MoveResponse[10][10];
 
     Player() {
         this.activeShips = ShipGenerator.generateRandomShips();
@@ -25,7 +25,7 @@ public abstract class Player {
     }
 
     public MoveResponse checkShot(int x, int y) {
-        int[] shot = {x, y};
+        int[] shot = {x+1, y+1};
 
         for (Ship ship : activeShips) {
             for (int[] coord : ship.getCoords()) {
@@ -35,6 +35,8 @@ public abstract class Player {
                     if (ship.isSunk()) {
                         activeShips.remove(ship);
                         sunkShips.add(ship);
+
+                        if (activeShips.isEmpty()) return MoveResponse.ALL_SHIPS_SUNK;
 
                         return MoveResponse.SHIP_SUNK;
                     }
@@ -53,7 +55,7 @@ public abstract class Player {
         return activeShips;
     }
 
-    public HashSet<int[]> getFiredShots() {
+    public MoveResponse[][] getFiredShots() {
         return firedShots;
     }
 }
