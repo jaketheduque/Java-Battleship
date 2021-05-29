@@ -6,13 +6,13 @@ import me.jazzyjake.ships.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Scanner;
 
 public class ShipGenerator {
     public static ArrayList<Ship> generateRandomShips() {
         ArrayList<Ship> ships = new ArrayList<>();
-        HashSet<int[]> occupied = new HashSet<>();
+        LinkedHashSet<int[]> occupied = new LinkedHashSet<>();
 
         // Adds a Carrier
         Carrier carrier = Carrier.random();
@@ -67,7 +67,7 @@ public class ShipGenerator {
 
     public static ArrayList<Ship> getShipsFromConsoleInput() throws NoSuchMethodException, InstantiationException, IllegalAccessException {
         ArrayList<Ship> ships = new ArrayList<>();
-        HashSet<int[]> occupied = new HashSet<>();
+        LinkedHashSet<int[]> occupied = new LinkedHashSet<>();
         Scanner scan = new Scanner(System.in);
 
         for (Class shipType : Ship.SHIP_TYPES) {

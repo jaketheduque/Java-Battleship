@@ -1,20 +1,17 @@
 package me.jazzyjake.player;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-
-import me.jazzyjake.game.Game;
 import me.jazzyjake.game.MoveResponse;
 import me.jazzyjake.misc.ShipGenerator;
 import me.jazzyjake.ships.Ship;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+
 public abstract class Player {
     private ArrayList<Ship> activeShips;
     private ArrayList<Ship> sunkShips = new ArrayList<>();
-    private HashSet<int[]> firedShots = new HashSet<>();
+    private LinkedHashSet<int[]> firedShots = new LinkedHashSet<>();
 
     Player() {
         this.activeShips = ShipGenerator.generateRandomShips();
@@ -53,7 +50,7 @@ public abstract class Player {
         return activeShips;
     }
 
-    public HashSet<int[]> getFiredShots() {
+    public LinkedHashSet<int[]> getFiredShots() {
         return firedShots;
     }
 }
