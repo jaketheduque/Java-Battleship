@@ -1,13 +1,15 @@
 package me.jazzyjake.events;
 
+import me.jazzyjake.clients.Client;
 import me.jazzyjake.player.Player;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class TurnEventHandler {
-    private Player currentAttacker;
-    private Player currentDefender;
+    // currentAttacker and currentDefender may not be needed (TBD)
+    private Client currentAttacker;
+    private Client currentDefender;
     private PropertyChangeSupport support;
 
     public TurnEventHandler() {
@@ -22,7 +24,10 @@ public class TurnEventHandler {
         support.removePropertyChangeListener(listener);
     }
 
-    public void signalNextTurn(Player newAttacker, Player newDefender) {
-        support.firePropertyChange("currentAttacker", newDefender, newAttacker);
+    public void signalNextTurn(Client newAttacker, Client newDefender) {
+        currentAttacker = newAttacker;
+        currentDefender = newDefender;
+
+        support.firePropertyChange("currentAttacker", currentDefender, currentAttacker);
     }
 }

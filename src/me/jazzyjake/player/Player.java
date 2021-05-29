@@ -12,7 +12,6 @@ import me.jazzyjake.misc.ShipGenerator;
 import me.jazzyjake.ships.Ship;
 
 public abstract class Player {
-    private Game game;
     private ArrayList<Ship> activeShips;
     private ArrayList<Ship> sunkShips = new ArrayList<>();
     private HashSet<int[]> firedShots = new HashSet<>();
@@ -36,6 +35,8 @@ public abstract class Player {
                     if (ship.isSunk()) {
                         activeShips.remove(ship);
                         sunkShips.add(ship);
+
+                        return MoveResponse.SHIP_SUNK;
                     }
 
                     return MoveResponse.HIT;
@@ -44,14 +45,6 @@ public abstract class Player {
         }
 
         return MoveResponse.MISS;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
     }
 
     public abstract PlayerColor getColor();

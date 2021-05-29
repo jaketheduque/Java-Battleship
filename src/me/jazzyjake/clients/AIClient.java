@@ -4,12 +4,6 @@ import me.jazzyjake.game.MoveResponse;
 import me.jazzyjake.misc.BattleshipUtil;
 import me.jazzyjake.player.Player;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
-import java.util.Random;
-
 public class AIClient extends Client {
     private int[] hitOrigin;
     private int[] lastTriedMove;
@@ -21,12 +15,18 @@ public class AIClient extends Client {
         RIGHT, DOWN, LEFT, UP
     }
 
-    public AIClient(Class<Player> playerClass) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        super(playerClass.getConstructor().newInstance());
+    public AIClient(Player player) {
+        super(player);
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void onNextTurn(Client newAttacker, Client oldAttacker) {
+        if (newAttacker.getPlayer() == player) {
+            System.out.println("AI is attacking!");
+        } else {
+            System.out.println("AI is defending!");
+        }
+
         MoveResponse response = null;
 
         if (hitOrigin == null) {
@@ -34,7 +34,7 @@ public class AIClient extends Client {
                 int x = BattleshipUtil.random();
                 int y = BattleshipUtil.random();
 
-                response = player.getGame().fireShotAtDefender(x, y);
+                response = getGame().fireShotAtDefender(x, y);
 
                 if (response == MoveResponse.HIT) {
 

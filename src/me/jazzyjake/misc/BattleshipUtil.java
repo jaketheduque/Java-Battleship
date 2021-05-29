@@ -17,7 +17,6 @@ public class BattleshipUtil {
 				if (coord[0] == shipCoord[0] && coord[1] == shipCoord[1]) return true;
 			}
 		}
-		
 		return false;
 	}
 }

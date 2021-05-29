@@ -1,5 +1,6 @@
 package me.jazzyjake.game;
 
+import me.jazzyjake.clients.AIClient;
 import me.jazzyjake.clients.Client;
 import me.jazzyjake.events.TurnEventHandler;
 import me.jazzyjake.player.BluePlayer;
@@ -12,83 +13,79 @@ import java.util.Arrays;
 public class Game {
 	private TurnEventHandler turnHandler = new TurnEventHandler();
 
-	private final RedPlayer redPlayer;
-	private final BluePlayer bluePlayer;
+	private final Client redPlayer;
+	private final Client bluePlayer;
 
-	private Player attacker;
-	private Player defender;
+	private Client attacker;
+	private Client defender;
 
 	public Game(Client client) {
 		if (client.getPlayer() instanceof RedPlayer) {
-			this.redPlayer = (RedPlayer) client.getPlayer();
-			this.bluePlayer = new BluePlayer();
+			redPlayer = client;
+			bluePlayer = new AIClient(new BluePlayer());
 
 		} else {
-			this.bluePlayer = (BluePlayer) client.getPlayer();
-			this.redPlayer = new RedPlayer();
+			bluePlayer = client;
+			redPlayer = new AIClient(new RedPlayer());
 		}
 
-		if (Math.random() > 0.5) {
-			attacker = this.redPlayer;
-			defender = this.bluePlayer;
-		} else {
-			attacker = this.bluePlayer;
-			defender = this.redPlayer;
-		}
+		this.redPlayer.setGame(this);
+		this.bluePlayer.setGame(this);
 
-		client.getPlayer().setGame(this);
-
-		turnHandler.addPropertyChangeListener(client);
+		turnHandler.addPropertyChangeListener(redPlayer);
+		turnHandler.addPropertyChangeListener(bluePlayer);
 	}
 
 	public Game(Client client1, Client client2) {
 		if (Math.random() > 0.5) {
-			redPlayer = (RedPlayer) client1.getPlayer();
-			bluePlayer = (BluePlayer) client2.getPlayer();
-
-			attacker = this.redPlayer;
-			defender = this.bluePlayer;
+			redPlayer = client1;
+			bluePlayer = client2;
 		} else {
-			bluePlayer = (BluePlayer) client1.getPlayer();
-			redPlayer = (RedPlayer) client2.getPlayer();
-
-			attacker = this.bluePlayer;
-			defender = this.redPlayer;
+			bluePlayer = client1;
+			redPlayer = client2;
 		}
 
-		client1.getPlayer().setGame(this);
-		client2.getPlayer().setGame(this);
+		client1.setGame(this);
+		client2.setGame(this);
 
-		turnHandler.addPropertyChangeListener(client1);
-		turnHandler.addPropertyChangeListener(client2);
+		turnHandler.addPropertyChangeListener(redPlayer);
+		turnHandler.addPropertyChangeListener(bluePlayer);
 	}
 
 	public MoveResponse fireShotAtDefender(int x, int y) {
 		int[] shot = new int[] {x, y};
 
-		for (int[] coord : attacker.getFiredShots()) {
+		for (int[] coord : attacker.getPlayer().getFiredShots()) {
 			if (Arrays.equals(coord, shot)) return MoveResponse.DUPLICATE_SHOT;
 		}
 
-		attacker.getFiredShots().add(shot);
+		attacker.getPlayer().getFiredShots().add(shot);
 
-		MoveResponse response = defender.checkShot(x, y);
-
-		// For testing purposes the attacker will remain constant
-		// nextTurn();
+		MoveResponse response = defender.getPlayer().checkShot(x, y);
 
 		return response;
 	}
 
 	public void nextTurn() {
-		Player tempDefender = defender;
-		defender = attacker;
-		attacker = tempDefender;
+		// Runs the first time nextTurn is called to initialize attacker and defender fields
+		if (attacker == null && defender == null) {
+			if (Math.random() > 0.5) {
+				attacker = this.redPlayer;
+				defender = this.bluePlayer;
+			} else {
+				attacker = this.bluePlayer;
+				defender = this.redPlayer;
+			}
+		} else {
+			Client tempDefender = defender;
+			defender = attacker;
+			attacker = tempDefender;
+		}
 
 		turnHandler.signalNextTurn(attacker, defender);
 	}
 
-	public Player getFromPlayerColor(PlayerColor color) {
+	public Client getFromPlayerColor(PlayerColor color) {
 		switch(color) {
 			case RED:
 				return redPlayer;
@@ -111,24 +108,19 @@ public class Game {
 		}
 	}
 
-	public void setDefender(PlayerColor color) {
-		switch (color) {
-			case RED:
-				defender = redPlayer;
-				attacker = bluePlayer;
-				return;
-			case BLUE:
-				defender = bluePlayer;
-				attacker = redPlayer;
-				return;
-		}
+	public Client getRedPlayer() {
+		return redPlayer;
 	}
 
-	public Player getAttacker() {
+	public Client getBluePlayer() {
+		return bluePlayer;
+	}
+
+	public Client getAttacker() {
 		return attacker;
 	}
 
-	public Player getDefender() {
+	public Client getDefender() {
 		return defender;
 	}
 }

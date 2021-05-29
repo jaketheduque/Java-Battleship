@@ -27,11 +27,9 @@ public class BattleshipMain {
 
         Game game = new Game(client);
 
-        if (game.getAttacker() != player) {
-            Thread.sleep(5000L);
+        for (int i = 0 ; i < 5 ; i++) {
             game.nextTurn();
-        } else {
-            System.out.println("Your turn right now!");
+            Thread.sleep(1000L);
         }
     }
 }

@@ -10,10 +10,12 @@ public class CommandLineClient extends Client {
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void onNextTurn(Client newAttacker, Client oldAttacker) {
         // If the new attacker is this client
-        if (evt.getNewValue() == player) {
-            System.out.println("Your turn!");
+        if (newAttacker.getPlayer() == player) {
+            System.out.println("You're attacking!");
+        } else {
+            System.out.println("You're defending!");
         }
     }
 }
