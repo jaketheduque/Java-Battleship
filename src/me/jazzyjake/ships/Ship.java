@@ -1,15 +1,15 @@
 package me.jazzyjake.ships;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
 import me.jazzyjake.exceptions.InvalidOriginException;
+
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 
 public abstract class Ship {
 	public static final Class[] SHIP_TYPES = {Carrier.class, Battleship.class, Cruiser.class, Submarine.class, PatrolBoat.class};
 	private final Direction direction;
 	private final int[][] coords;
-	private HashSet<int[]> hits = new HashSet<>();
+	private LinkedHashSet<int[]> hits = new LinkedHashSet<>();
 	private boolean sunk;
 
 	Ship(int x, int y, Direction direction) throws InvalidOriginException {
@@ -43,7 +43,7 @@ public abstract class Ship {
 	// point
 	abstract int[][] fillCoords(int x, int y, Direction direction);
 
-	public HashSet<int[]> getHits() {
+	public LinkedHashSet<int[]> getHits() {
 		return hits;
 	}
 
